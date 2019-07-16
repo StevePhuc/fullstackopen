@@ -1,0 +1,14 @@
+note over browser:
+browser starts executing js-code:
+- revent the default handling of form submit. 
+- creates a new note, adds it to the notes list.  
+- rerenders the note list on the page and sends the new note to the server.
+end note
+
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa with JSON-data 
+server-->browser: 201 created
+ 
+
+
+ 
+ 
