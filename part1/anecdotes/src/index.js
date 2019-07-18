@@ -6,7 +6,7 @@ const App = props => {
     const [selected, setSelected] = useState(0);
     const [votes, setVotes] = useState(votesZero);
 
-    // console.log(votes);
+    console.log(votes);
 
     const increaseVote = () => {
         setVotes(votes.map((vote, index) => (index == selected ? vote + 1 : vote)));
@@ -17,13 +17,28 @@ const App = props => {
         // console.log(random);
         setSelected(random);
     };
+    const maxIndex = () => {
+        let maxVote = 0;
+        let maxIndex = 0;
+        votes.forEach((vote, index) => {
+            if (vote > maxVote) {
+                maxVote = vote;
+                maxIndex = index;
+            }
+        });
+        return maxIndex;
+    };
 
     return (
         <div>
+            <h1>Anecdote of the day</h1>
             <p>{props.anecdotes[selected]}</p>
             <p>has {votes[selected]} votes</p>
             <button onClick={() => increaseVote()}>vote</button>
             <button onClick={() => randomSelect()}>next anecdotes</button>
+            <h1>Anecdote with most votes</h1>
+            <p>{props.anecdotes[maxIndex()]}</p>
+            <p>has {votes[maxIndex()]} votes</p>
         </div>
     );
 };
