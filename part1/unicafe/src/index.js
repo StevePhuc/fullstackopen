@@ -9,9 +9,13 @@ const FeedBack = () => {
     );
 };
 
-const Button = ({ onClick, text }) => {
-    return <button onClick={onClick}>{text}</button>;
-};
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
+
+const Statistic = ({ text, value }) => (
+    <p>
+        {text} {value}
+    </p>
+);
 
 const Statistics = ({ good, neutral, bad }) => {
     const total = good + neutral + bad;
@@ -28,9 +32,9 @@ const Statistics = ({ good, neutral, bad }) => {
     return (
         <div>
             <h1>Statistics</h1>
-            <p>good {good} </p>
-            <p>neutral {neutral} </p>
-            <p>bad {bad} </p>
+            <Statistic text="good" value={good} />
+            <Statistic text="neutral" value={neutral} />
+            <Statistic text="bad" value={bad} />
             <p>all {total} </p>
             <p>average {average} </p>
             <p>positive {positive} % </p>
