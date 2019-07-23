@@ -3,13 +3,21 @@ import React, { useState } from "react";
 const App = () => {
     const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
     const [newName, setNewName] = useState("");
+    const [newNumber, setNewNumber] = useState("");
 
     const personToShow = persons.map(person => {
-        return <p key={person.name}>{person.name}</p>;
+        return (
+            <p key={person.name}>
+                {person.name} {person.number}
+            </p>
+        );
     });
 
     const handleNewName = e => {
         setNewName(e.target.value);
+    };
+    const handleNewNumber = e => {
+        setNewNumber(e.target.value);
     };
 
     const addPerson = e => {
@@ -19,7 +27,7 @@ const App = () => {
             alert(`${newName} is already added to phonebook`);
             return;
         }
-        setPersons([...persons, { name: newName }]);
+        setPersons([...persons, { name: newName, number: newNumber }]);
         setNewName("");
     };
 
@@ -29,6 +37,9 @@ const App = () => {
             <form onSubmit={addPerson}>
                 <div>
                     name: <input value={newName} onChange={handleNewName} />
+                </div>
+                <div>
+                    number: <input value={newNumber} onChange={handleNewNumber} />
                 </div>
                 <div>
                     <button type="submit">add</button>
