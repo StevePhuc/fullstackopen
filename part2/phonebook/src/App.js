@@ -20,14 +20,6 @@ const App = () => {
 
     const personsFilter = persons.filter(person => person.name.toLowerCase().includes(searchName.toLowerCase()));
 
-    const personToShow = personsFilter.map(person => {
-        return (
-            <p key={person.name}>
-                {person.name} {person.number}
-            </p>
-        );
-    });
-
     const handleNewName = e => {
         setNewName(e.target.value);
     };
@@ -38,6 +30,16 @@ const App = () => {
         setSearchName(e.target.value);
     };
 
+    const handlePersonDelete = index => {
+        console.log(index);
+        services.deletePerson(index).then(response => {
+            if (response.statusText === "OK") {
+                const newPersons = persons.filter(person => person.id !== index);
+                setPersons(newPersons);
+            }
+        });
+    };
+
     const addPerson = e => {
         e.preventDefault();
 
@@ -46,11 +48,11 @@ const App = () => {
             return;
         }
         const addPersonObj = { name: newName, number: newNumber };
-        setPersons([...persons, addPersonObj]);
-        setNewName("");
 
         services.create(addPersonObj).then(response => {
             console.log(response);
+            setPersons([...persons, response.data]);
+            setNewName("");
         });
     };
 
@@ -68,7 +70,7 @@ const App = () => {
             />
             <h2>Numbers</h2>
 
-            <Persons personToShow={personToShow} />
+            <Persons personToShow={personsFilter} handlePersonDelete={handlePersonDelete} />
         </div>
     );
 };

@@ -9,4 +9,8 @@ const create = addPersonObj => {
     return Axios.post("http://localhost:3001/persons", addPersonObj);
 };
 
-export default { getAll, create };
+const deletePerson = index => {
+    return Axios.delete("http://localhost:3001/persons/" + index);
+};
+
+export default { getAll, create, deletePerson };
