@@ -31,7 +31,10 @@ const App = () => {
     };
 
     const handlePersonDelete = index => {
-        console.log(index);
+        // console.log(index);
+        if (!window.confirm(`Delet ${persons[index - 1].name}`)) {
+            return;
+        }
         services.deletePerson(index).then(response => {
             if (response.statusText === "OK") {
                 const newPersons = persons.filter(person => person.id !== index);
