@@ -1,4 +1,5 @@
 import React from "react";
+import ShowWeather from "./showWeather";
 
 const CountryView = ({ countryView }) => {
     if (countryView == null) {
@@ -17,6 +18,7 @@ const CountryView = ({ countryView }) => {
                     ))}
                 </ul>
                 <img src={flag} alt={name} style={{ width: "100px" }} />
+                <ShowWeather countryView={countryView} />
             </div>
         );
     }

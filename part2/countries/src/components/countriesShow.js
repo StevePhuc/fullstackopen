@@ -2,7 +2,7 @@ import React from "react";
 
 const CountriesShow = ({ countryList, countries, handleCountryShow }) => {
     const totalCountriesFilter = countryList.length;
-    console.log(totalCountriesFilter);
+    // console.log(totalCountriesFilter);
 
     if (totalCountriesFilter <= 1) {
         return <div />;
