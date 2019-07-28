@@ -1,58 +1,46 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
+import CountriesShow from "./components/countriesShow";
+import CountryView from "./components/countryView";
 
 const App = () => {
     const [countries, setCountries] = useState([]);
     const [searchCountry, setSearchCountry] = useState("");
+    const [countryList, setCountryList] = useState([]);
+    const [countryView, setCountryView] = useState(null);
 
     useEffect(() => {
         Axios.get("https://restcountries.eu/rest/v2/all").then(response => {
-            console.log(response);
-
             setCountries(response.data);
         });
     }, []);
 
-    const countriesFilter = countries.filter(country =>
-        country.name.toLowerCase().includes(searchCountry.toLowerCase())
-    );
+    const handleSearchCountry = e => {
+        const searchInput = e.target.value;
+        setSearchCountry(searchInput);
 
-    const countriesToShow = countriesFilter => {
-        const totalCountriesFilter = countriesFilter.length;
-        console.log(countriesFilter);
-        if (totalCountriesFilter === 1) {
-            return countriesFilter.map(({ name, capital, languages, flag, population }, index) => (
-                <div key={index}>
-                    <h2>{name}</h2>
-                    <p>capital: {capital} </p>
-                    <p>population: {population} </p>
-                    <h2>languages</h2>
-                    <ul>
-                        {languages.map((language, index) => (
-                            <li key={index}>{language.name}</li>
-                        ))}
-                    </ul>
-                    <img src={flag} alt={name} />
-                </div>
-            ));
-        }
-        if (totalCountriesFilter <= 10) {
-            return countriesFilter.map((country, index) => <p key={index}>{country.name}</p>);
-        }
-        if (totalCountriesFilter < countries.length) {
-            return <p>Too many matches {totalCountriesFilter},specify another filter</p>;
+        const countriesFilter = countries.filter(country =>
+            country.name.toLowerCase().includes(searchInput.toLowerCase())
+        );
+        setCountryList(countriesFilter);
+        if (countriesFilter.length === 1) {
+            setCountryView(countriesFilter[0]);
+        } else {
+            setCountryView(null);
         }
     };
 
-    const handleSearchContry = e => {
-        setSearchCountry(e.target.value);
+    const handleCountryShow = index => {
+        // console.log(countryList[index]);
+        setCountryView(countryList[index]);
     };
 
     return (
         <div>
             <span>find countries </span>
-            <input onChange={handleSearchContry} value={searchCountry} />
-            {countriesToShow(countriesFilter)}
+            <input onChange={handleSearchCountry} value={searchCountry} />
+            <CountriesShow countryList={countryList} countries={countries} handleCountryShow={handleCountryShow} />
+            <CountryView countryView={countryView} />
         </div>
     );
 };
