@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import services from "../services";
+import React from "react";
 
 const Persons = ({ personToShow, handlePersonDelete }) => {
     return personToShow.map(person => {
