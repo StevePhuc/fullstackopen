@@ -1,16 +1,20 @@
 import Axios from "axios";
-const baseUrl = "http://localhost:3001/persons";
+const baseUrl = "http://localhost:3001/persons/";
 
 const getAll = () => {
-    return Axios.get("http://localhost:3001/persons");
+    return Axios.get(baseUrl);
 };
 
 const create = addPersonObj => {
-    return Axios.post("http://localhost:3001/persons", addPersonObj);
+    return Axios.post(baseUrl, addPersonObj);
 };
 
 const deletePerson = index => {
-    return Axios.delete("http://localhost:3001/persons/" + index);
+    return Axios.delete(baseUrl + "/" + index);
 };
 
-export default { getAll, create, deletePerson };
+const update = (index, updatePersonObj) => {
+    return Axios.put(`${baseUrl}/${index}`, updatePersonObj).then(response => response.data);
+};
+
+export default { getAll, create, deletePerson, update };

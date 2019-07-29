@@ -12,7 +12,7 @@ const App = () => {
 
     useEffect(() => {
         services.getAll().then(response => {
-            console.log(response);
+            // console.log(response);
 
             setPersons(response.data);
         });
@@ -32,7 +32,8 @@ const App = () => {
 
     const handlePersonDelete = index => {
         // console.log(index);
-        if (!window.confirm(`Delet ${persons[index - 1].name}`)) {
+        const findPersonObj = persons.find(person => (person.id === index ? person : null));
+        if (!window.confirm(`Delete ${findPersonObj.name}`)) {
             return;
         }
         services.deletePerson(index).then(response => {
@@ -45,17 +46,25 @@ const App = () => {
 
     const addPerson = e => {
         e.preventDefault();
+        const findPersonObj = persons.find(person => person.name === newName);
+        // console.log(findPersonObj);
 
-        if (persons.find(person => person.name === newName)) {
-            alert(`${newName} is already added to phonebook`);
+        if (findPersonObj) {
+            if (window.confirm(`${newName} is already added to phonebook,replace the old number with a new one?`)) {
+                findPersonObj.number = newNumber;
+                services.update(findPersonObj.id, findPersonObj);
+                const updatePersons = persons.map(person => (person.id === findPersonObj.id ? findPersonObj : person));
+                setPersons(updatePersons);
+            }
             return;
         }
         const addPersonObj = { name: newName, number: newNumber };
 
         services.create(addPersonObj).then(response => {
-            console.log(response);
+            // console.log(response);
             setPersons([...persons, response.data]);
             setNewName("");
+            setNewNumber("");
         });
     };
 
