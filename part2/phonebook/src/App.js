@@ -10,7 +10,7 @@ const App = () => {
     const [newName, setNewName] = useState("");
     const [newNumber, setNewNumber] = useState("");
     const [searchName, setSearchName] = useState("");
-    const [message, setMessage] = useState(null);
+    const [message, setMessage] = useState({ message: null, error: false });
 
     useEffect(() => {
         services.getAll().then(response => {
@@ -38,12 +38,23 @@ const App = () => {
         if (!window.confirm(`Delete ${findPersonObj.name}`)) {
             return;
         }
-        services.deletePerson(index).then(response => {
-            if (response.statusText === "OK") {
+        services
+            .deletePerson(index)
+            .then(response => {
+                if (response.statusText === "OK") {
+                    const newPersons = persons.filter(person => person.id !== index);
+                    setPersons(newPersons);
+                    setMessage({ ...message, message: `Delete ${findPersonObj.name} succeeded` });
+                }
+            })
+            .catch(error => {
+                setMessage({
+                    message: `Information of ${findPersonObj.name} was already deleted from server`,
+                    error: true
+                });
                 const newPersons = persons.filter(person => person.id !== index);
                 setPersons(newPersons);
-            }
-        });
+            });
     };
 
     const addPerson = e => {
@@ -66,7 +77,7 @@ const App = () => {
         services.create(addPersonObj).then(response => {
             // console.log(response);
             setPersons([...persons, response.data]);
-            setMessage(`Added ${newName}`);
+            setMessage({ ...message, message: `Added ${newName}` });
             setNewName("");
             setNewNumber("");
         });
@@ -75,7 +86,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
-            <Notification message={message} />
+            <Notification messageObj={message} />
             <Filter searchName={searchName} handleSearchName={handleSearchName} />
             <h2>Add a new</h2>
             <PersonForm
