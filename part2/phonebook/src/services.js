@@ -1,5 +1,5 @@
 import Axios from "axios";
-const baseUrl = "/api/persons/";
+const baseUrl = "/api/persons";
 
 const getAll = () => {
     return Axios.get(baseUrl);
