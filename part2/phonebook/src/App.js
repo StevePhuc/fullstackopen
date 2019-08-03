@@ -68,7 +68,7 @@ const App = () => {
                 services.update(findPersonObj.id, findPersonObj);
                 const updatePersons = persons.map(person => (person.id === findPersonObj.id ? findPersonObj : person));
                 setPersons(updatePersons);
-                setMessage(`Number is change for ${newName}`);
+                setMessage({ ...message, message: `Number is change for ${newName}` });
             }
             return;
         }
