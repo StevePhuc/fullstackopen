@@ -74,13 +74,22 @@ const App = () => {
         }
         const addPersonObj = { name: newName, number: newNumber };
 
-        services.create(addPersonObj).then(response => {
-            // console.log(response);
-            setPersons([...persons, response.data]);
-            setMessage({ ...message, message: `Added ${newName}` });
-            setNewName("");
-            setNewNumber("");
-        });
+        services
+            .create(addPersonObj)
+            .then(response => {
+                // console.log(response);
+                setPersons([...persons, response.data]);
+                setMessage({ ...message, message: `Added ${newName}` });
+                setNewName("");
+                setNewNumber("");
+            })
+            .catch(err => {
+                // console.log(err.response.data);
+                setMessage({
+                    message: err.response.data.error,
+                    error: true
+                });
+            });
     };
 
     return (
