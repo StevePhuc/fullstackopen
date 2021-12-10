@@ -68,28 +68,19 @@ const App = () => {
                 services.update(findPersonObj.id, findPersonObj);
                 const updatePersons = persons.map(person => (person.id === findPersonObj.id ? findPersonObj : person));
                 setPersons(updatePersons);
-                setMessage({ ...message, message: `Number is change for ${newName}` });
+                setMessage(`Number is change for ${newName}`);
             }
             return;
         }
         const addPersonObj = { name: newName, number: newNumber };
 
-        services
-            .create(addPersonObj)
-            .then(response => {
-                // console.log(response);
-                setPersons([...persons, response.data]);
-                setMessage({ ...message, message: `Added ${newName}` });
-                setNewName("");
-                setNewNumber("");
-            })
-            .catch(err => {
-                // console.log(err.response.data);
-                setMessage({
-                    message: err.response.data.error,
-                    error: true
-                });
-            });
+        services.create(addPersonObj).then(response => {
+            // console.log(response);
+            setPersons([...persons, response.data]);
+            setMessage({ ...message, message: `Added ${newName}` });
+            setNewName("");
+            setNewNumber("");
+        });
     };
 
     return (
